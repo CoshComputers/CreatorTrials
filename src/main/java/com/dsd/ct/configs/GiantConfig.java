@@ -4,7 +4,26 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GiantConfig {
+    private static final List<String> commandList = new ArrayList<>();
+
+    public GiantConfig() {
+        commandList.add("spawnFrequency");
+        commandList.add("scaleFactor");
+        commandList.add("health");
+        commandList.add("damage");
+        commandList.add("followRange");
+        commandList.add("aggressionLevel");
+        commandList.add("visibilityRange");
+        commandList.add("xpPoints");
+    }
+
+    public static List<String> getCommandList() {
+        return commandList;
+    }
 
     @Override
     public String toString() {

@@ -4,7 +4,25 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SurvivalTrialsConfig {
+    private static final List<String> commandList = new ArrayList<>();
+
+    public SurvivalTrialsConfig(){
+        commandList.add("overrideMobs");
+        commandList.add("spawnGiants");
+        commandList.add("giveInitialGear");
+        commandList.add("giveSpecialLoot");
+        commandList.add("usePlayerHeads");
+        commandList.add("debugOn");
+    }
+
+    public static List<String> getCommandList() {
+        return commandList;
+    }
+
     @Override
     public String toString() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
