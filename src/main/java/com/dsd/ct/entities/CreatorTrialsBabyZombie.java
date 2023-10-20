@@ -11,17 +11,26 @@ import net.minecraft.world.level.Level;
 
 public class CreatorTrialsBabyZombie extends Zombie {
     private ModEnums.SkullDropMapping appearance;
-    public CreatorTrialsBabyZombie(EntityType<? extends Zombie> entity, Level level) {
-        super(entity, level);
-        this.setBaby(true);
-        this.appearance = ModEnums.SkullDropMapping.UNKNOWN;
-    }
 
     public CreatorTrialsBabyZombie(Level p_34274_) {
         super(p_34274_);
         this.setBaby(true);
+        this.appearance = ModEnums.SkullDropMapping.UNKNOWN;
     }
 
+    public CreatorTrialsBabyZombie(EntityType type, Level world) {
+
+        super(type,world);
+        this.setBaby(true);
+        this.appearance = ModEnums.SkullDropMapping.UNKNOWN;
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+
+        // Add custom goals here
+    }
     public ModEnums.SkullDropMapping getAppearance() {
         return appearance;
     }

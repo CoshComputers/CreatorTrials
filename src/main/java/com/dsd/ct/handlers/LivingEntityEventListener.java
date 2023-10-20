@@ -10,21 +10,24 @@ import com.dsd.ct.util.ModEnums;
 import com.dsd.ct.util.ModUtilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = CreatorTrials.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class LivingSpawnEventListener {
+public class LivingEntityEventListener {
     private static int preventedHostileMobSpawns = 0;
     private static int unpreventedHostileMobSpawns = 0;
 
+    @SubscribeEvent
+    public static void onEntityJoinEvent(EntityJoinLevelEvent event){
+    }
     @SubscribeEvent
     public static void onLivingSpawnEvent(MobSpawnEvent event) {
 
@@ -82,7 +85,7 @@ public class LivingSpawnEventListener {
         int randomNumber = ModUtilities.nextInt(100);
         CreatorTrialsBabyZombie newMob = null;
 
-        newMob = new CreatorTrialsBabyZombie(EntityType.ZOMBIE,level);
+        newMob = new CreatorTrialsBabyZombie(level);
         if(randomNumber < endermanChance){
             if(randomNumber<blazeChance) {
                 newMob.setAppearance(ModEnums.SkullDropMapping.BLAZE);

@@ -1,7 +1,11 @@
 package com.dsd.ct;
 
+import com.dsd.ct.entities.CreatorTrialsBabyZombie;
 import com.dsd.ct.util.CustomLogger;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,6 +20,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(CreatorTrials.MOD_ID)
 public class CreatorTrials
@@ -29,6 +34,7 @@ public class CreatorTrials
     // Create a Deferred Register to hold Items which will all be registered under the "examplemod" namespace
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MOD_ID);
     public CreatorTrials()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -40,7 +46,7 @@ public class CreatorTrials
         BLOCKS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
         ITEMS.register(modEventBus);
-
+        registerEntities();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -50,6 +56,11 @@ public class CreatorTrials
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
 
+    }
+    public static void registerEntities() {
+        ENTITIES.register("baby_zombie", () -> EntityType.Builder.of((type, world) -> new CreatorTrialsBabyZombie(type, world), MobCategory.MONSTER)
+                .sized(0.6F, 1.5F)
+                .build(new ResourceLocation("minecraft:zombie").toString()));
     }
 
 
