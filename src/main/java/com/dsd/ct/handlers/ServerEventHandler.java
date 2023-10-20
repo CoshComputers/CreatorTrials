@@ -8,8 +8,11 @@ import com.dsd.ct.managers.ConfigManager;
 import com.dsd.ct.managers.FileAndDirectoryManager;
 import com.dsd.ct.managers.PlayerManager;
 import com.dsd.ct.util.CustomLogger;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.LevelResource;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
@@ -22,6 +25,28 @@ import java.nio.file.Path;
 @Mod.EventBusSubscriber(modid = CreatorTrials.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEventHandler {
     private static final ConfigManager configManager = ConfigManager.getInstance();
+
+    @SubscribeEvent
+    public void onLootTableLoad(LootTableLoadEvent event) {
+        // Check if the loot table is for your custom mob
+        if (event.getName().equals(new ResourceLocation(CreatorTrials.MOD_ID, "loot_tables/entities/creator_trials_baby_zombie"))) {
+            // Get the loot table
+            LootTable lootTable = event.getTable();
+
+            // Modify the loot table based on the "appearance" of the mob
+            if (mob.getAppearance() == 1) {
+                // Modify the loot table for appearance 1
+            } else if (mob.getAppearance() == 2) {
+                // Modify the loot table for appearance 2
+            } else {
+                // Modify the loot table for appearance 3
+            }
+
+            // Set the modified loot table
+            event.setTable(lootTable);
+        }
+    }
+
 
     @SubscribeEvent
     public static void onServerStopped(ServerStoppedEvent event) {

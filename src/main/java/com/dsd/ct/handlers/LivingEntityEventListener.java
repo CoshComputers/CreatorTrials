@@ -86,6 +86,7 @@ public class LivingEntityEventListener {
         CreatorTrialsBabyZombie newMob = null;
 
         newMob = new CreatorTrialsBabyZombie(level);
+        (LivingEntity) newMob.getEntityData().set()
         if(randomNumber < endermanChance){
             if(randomNumber<blazeChance) {
                 newMob.setAppearance(ModEnums.SkullDropMapping.BLAZE);

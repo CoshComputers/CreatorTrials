@@ -2,6 +2,7 @@ package com.dsd.ct.entities;
 
 import com.dsd.ct.util.ModEnums;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.monster.Zombie;
