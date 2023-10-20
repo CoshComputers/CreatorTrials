@@ -3,6 +3,7 @@ package com.dsd.ct.managers;
 import com.dsd.ct.configs.*;
 import com.dsd.ct.containers.*;
 import com.dsd.ct.util.CustomLogger;
+import com.dsd.ct.util.EnumTypes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -198,8 +199,8 @@ public class ConfigManager {
     public GiantConfigContainer getGiantConfigContainer(){ return giantConfigContainer; }
 
     /********************************* HELPER FUNCTIONS *********************************************/
-    public String toggleMainConfigOption(com.dsd.ct.util.EnumTypes.ModConfigOption option) {
-        SurvivalTrialsConfig.MainConfig config = ConfigManager.getInstance().getSurvivalTrialsConfigContainer().getSurvivalTrialsConfig().getSurvivalTrialsMainConfig();
+    public String toggleMainConfigOption(EnumTypes.ModConfigOption option) {
+        SurvivalTrialsConfig.MainConfig config = this.getSurvivalTrialsConfigContainer().getSurvivalTrialsConfig().getSurvivalTrialsMainConfig();
         boolean newValue;
         switch (option) {
             case OVERRIDE_MOBS:

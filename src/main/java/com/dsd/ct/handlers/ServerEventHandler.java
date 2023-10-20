@@ -4,10 +4,8 @@ import com.dsd.ct.CreatorTrials;
 import com.dsd.ct.configs.GiantConfig;
 import com.dsd.ct.configs.PlayerConfig;
 import com.dsd.ct.configs.SurvivalTrialsConfig;
-import com.dsd.ct.entities.OverriddenMobType;
 import com.dsd.ct.managers.ConfigManager;
 import com.dsd.ct.managers.FileAndDirectoryManager;
-import com.dsd.ct.managers.MobSpawnManager;
 import com.dsd.ct.managers.PlayerManager;
 import com.dsd.ct.util.CustomLogger;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +17,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.nio.file.Path;
-import java.util.List;
 
 
 @Mod.EventBusSubscriber(modid = CreatorTrials.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -31,6 +28,8 @@ public class ServerEventHandler {
         for (PlayerConfig playerConfig : PlayerManager.getInstance().getAllPlayerConfigs().values()) {
             configManager.savePlayerConfig(playerConfig.getPlayerUuid(),playerConfig);
         }
+
+        ConfigManager.getInstance().saveSurvivalTrialsConfig();
 
         CustomLogger.getInstance().outputBulkToConsole();
         CustomLogger.getInstance().outputtimerLogToConsole();
@@ -62,18 +61,6 @@ public class ServerEventHandler {
 
         configManager.loadMobConfig();
         // Create Overridden Mobs using the loaded Mob Config
-        List<OverriddenMobType> overriddenMobTypes = MobSpawnManager.createOverriddenMobs(
-                configManager.getMobSpawnConfigContainer().getMobSpawnConfig().getMobSpawnOverrides()
-        );
-
-        if (!overriddenMobTypes.isEmpty()) {
-            int overriddenMobCount = overriddenMobTypes.size();
-            MobSpawnManager.getInstance().setOverriddenMobTypes(overriddenMobTypes);
-            CustomLogger.getInstance().info(String.format("Number of Mobs Overridden = %s", overriddenMobCount));
-            CustomLogger.getInstance().info(String.format("First Overridden Mob = %s", overriddenMobTypes.get(0).toString()));
-        } else {
-            CustomLogger.getInstance().warn("No overridden mobs found or an error occurred while loading mob overrides.");
-        }
 
         configManager.loadSurvivalTrialsConfig();
         SurvivalTrialsConfig.MainConfig modConfig = ConfigManager.getInstance().getSurvivalTrialsConfigContainer().getSurvivalTrialsConfig().getSurvivalTrialsMainConfig();

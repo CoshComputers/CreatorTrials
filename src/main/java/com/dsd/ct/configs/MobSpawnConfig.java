@@ -29,11 +29,6 @@ public class MobSpawnConfig {
 
 
     public static class MobOverride {
-        @SerializedName("mobType")
-        private String mobType;
-        @SerializedName("isBaby")
-        private boolean isBaby;
-
         @SerializedName("blazeWeighting")
         private int blazeWeighting;
         @SerializedName("endermenWeighting")
@@ -43,23 +38,6 @@ public class MobSpawnConfig {
             this.blazeWeighting = -1;
             this.endermenWeighting = -1;
         }
-
-        public String getMobType() {
-            return mobType;
-        }
-
-        public void setMobType(String mobType) {
-            this.mobType = mobType;
-        }
-
-        public boolean isBaby() {
-            return isBaby;
-        }
-
-        public void setBaby(boolean isBaby) {
-            this.isBaby = isBaby;
-        }
-        // ... other methods if necessary
 
         public int getBlazeWeighting() {
             return blazeWeighting;

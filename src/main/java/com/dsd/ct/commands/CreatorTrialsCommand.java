@@ -2,6 +2,7 @@ package com.dsd.ct.commands;
 
 import com.dsd.ct.managers.ConfigManager;
 import com.dsd.ct.util.CustomLogger;
+import com.dsd.ct.util.EnumTypes;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -29,9 +30,8 @@ public class CreatorTrialsCommand {
             StringBuilder sb = new StringBuilder();
             String option = (String) context.getArgument("option", String.class);
             CommandSourceStack cs = (CommandSourceStack) context.getSource();
-
-            sb.append("Toggle Command Ran - ");
-            sb.append("Option: ").append(option).append(" toggled from ");
+            EnumTypes.ModConfigOption configOption = EnumTypes.ModConfigOption.fromOptionName(option);
+            sb.append(ConfigManager.getInstance().toggleMainConfigOption(configOption));
 
             CustomLogger.getInstance().debug(sb.toString());
             Supplier<Component> componentSupplier = () -> Component.literal(sb.toString()).setStyle(style);
