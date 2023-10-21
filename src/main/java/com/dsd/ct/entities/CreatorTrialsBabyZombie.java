@@ -2,7 +2,9 @@ package com.dsd.ct.entities;
 
 import com.dsd.ct.util.ModEnums;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.monster.Zombie;
@@ -12,11 +14,13 @@ import net.minecraft.world.level.Level;
 
 public class CreatorTrialsBabyZombie extends Zombie {
     private ModEnums.SkullDropMapping appearance;
-
+    public static final EntityDataAccessor<String> APPEARANCE = SynchedEntityData.defineId(CreatorTrialsBabyZombie.class, EntityDataSerializers.STRING);
     public CreatorTrialsBabyZombie(Level p_34274_) {
         super(p_34274_);
         this.setBaby(true);
         this.appearance = ModEnums.SkullDropMapping.UNKNOWN;
+
+        this.entityData.define(APPEARANCE,"unknown");
     }
 
     public CreatorTrialsBabyZombie(EntityType type, Level world) {
@@ -24,6 +28,7 @@ public class CreatorTrialsBabyZombie extends Zombie {
         super(type,world);
         this.setBaby(true);
         this.appearance = ModEnums.SkullDropMapping.UNKNOWN;
+        this.entityData.set(APPEARANCE,"unknown");
     }
 
     @Override
@@ -38,6 +43,7 @@ public class CreatorTrialsBabyZombie extends Zombie {
 
     public void setAppearance(ModEnums.SkullDropMapping appearance) {
         this.appearance = appearance;
+        this.entityData.set(APPEARANCE, appearance.name());
         ItemStack head = ItemStack.EMPTY;
         ItemStack handItem = ItemStack.EMPTY;
         switch(this.appearance) {

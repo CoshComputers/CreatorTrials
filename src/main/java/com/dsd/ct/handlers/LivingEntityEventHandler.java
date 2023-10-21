@@ -15,16 +15,15 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = CreatorTrials.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class LivingEntityEventListener {
-    private static int preventedHostileMobSpawns = 0;
-    private static int unpreventedHostileMobSpawns = 0;
 
+@Mod.EventBusSubscriber(modid = CreatorTrials.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+public class LivingEntityEventHandler {
     @SubscribeEvent
     public static void onEntityJoinEvent(EntityJoinLevelEvent event){
     }
@@ -49,9 +48,8 @@ public class LivingEntityEventListener {
             SurvivalTrialsConfig.MainConfig mainConfig = ConfigManager.getInstance().getSurvivalTrialsConfigContainer()
                     .getSurvivalTrialsConfig().getSurvivalTrialsMainConfig();
             if (mainConfig.isOverrideMobs()) {
-                event.setResult(Event.Result.DENY);
-                preventedHostileMobSpawns++;
 
+                event.setResult(Event.Result.DENY);
                 if (event.isCancelable()) event.setCanceled(true);
                 if(overRideGeneralMobSpawning(event)){
 
@@ -62,17 +60,29 @@ public class LivingEntityEventListener {
                     CustomLogger.getInstance().error("Something went wrong overriding the Mob Spawning");
                 }
             }else{
-                unpreventedHostileMobSpawns++;
+
                 CustomLogger.getInstance().debug("Mob Spawning is not being overridden");
 
                 // Clear the queue of pending hostile mob spawns
             }
-            /*StringBuilder sb = new StringBuilder();
-            sb.append("Prevented Hostile Mob Spawns = ").append(preventedHostileMobSpawns);
-            sb.append("\tUnprevented Hostile Mob Spawns = ").append(unpreventedHostileMobSpawns);
-            CustomLogger.getInstance().debug(sb.toString());*/
+
         }
     }
+
+    @SubscribeEvent
+    public static void onLivingHurtEvent(LivingDamageEvent event){
+        LivingEntity entity = event.getEntity();
+
+        if(entity instanceof CreatorTrialsBabyZombie){
+            CustomLogger.getInstance().debug(String.format("Hurt One of ours - Appearance = [%s]", entity.getEntityData().get(CreatorTrialsBabyZombie.APPEARANCE)));
+        }
+
+    }
+
+
+
+
+    /********************************************WORKER METHODS******************************************************/
     private static boolean overRideGeneralMobSpawning(MobSpawnEvent event){
         MobSpawnConfig mobSpawnConfig = ConfigManager.getInstance().getMobSpawnConfigContainer().getMobSpawnConfig();
         boolean isSuccessful = false;
@@ -84,23 +94,26 @@ public class LivingEntityEventListener {
         int endermanChance = blazeChance + mobSpawnConfig.getMobSpawnOverrides().get(0).getEndermenWeighting();
         int randomNumber = ModUtilities.nextInt(100);
         CreatorTrialsBabyZombie newMob = null;
-
         newMob = new CreatorTrialsBabyZombie(level);
-        (LivingEntity) newMob.getEntityData().set()
+
         if(randomNumber < endermanChance){
             if(randomNumber<blazeChance) {
                 newMob.setAppearance(ModEnums.SkullDropMapping.BLAZE);
+                //newMob.getEntityData().set(APPEARANCE,"blaze");
             }else {
                 newMob.setAppearance(ModEnums.SkullDropMapping.ENDERMAN);
+               // newMob.getEntityData().set(APPEARANCE,"blaze");
             }
         }else{
             newMob.setAppearance(ModEnums.SkullDropMapping.UNKNOWN);
+           // newMob.getEntityData().set(APPEARANCE,"unknown");
         }
 
         if(newMob != null){
             //Spawn the new Mob
             newMob.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,0,0);
             isSuccessful = level.addFreshEntity(newMob);
+            //CustomLogger.getInstance().debug(String.format("New Entity Spawned with Appearance Data: [%s]",newMob.getEntityData().get(CreatorTrialsBabyZombie.APPEARANCE)));
         }
         if(!isSuccessful){
            CustomLogger.getInstance().error(String.format("Failed to spawn overridden mob = %s",newMob.toString()));

@@ -8,11 +8,8 @@ import com.dsd.ct.managers.ConfigManager;
 import com.dsd.ct.managers.FileAndDirectoryManager;
 import com.dsd.ct.managers.PlayerManager;
 import com.dsd.ct.util.CustomLogger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.LevelResource;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
@@ -21,12 +18,11 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.nio.file.Path;
 
-
 @Mod.EventBusSubscriber(modid = CreatorTrials.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEventHandler {
     private static final ConfigManager configManager = ConfigManager.getInstance();
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void onLootTableLoad(LootTableLoadEvent event) {
         // Check if the loot table is for your custom mob
         if (event.getName().equals(new ResourceLocation(CreatorTrials.MOD_ID, "loot_tables/entities/creator_trials_baby_zombie"))) {
@@ -45,8 +41,7 @@ public class ServerEventHandler {
             // Set the modified loot table
             event.setTable(lootTable);
         }
-    }
-
+    }*/
 
     @SubscribeEvent
     public static void onServerStopped(ServerStoppedEvent event) {
@@ -54,12 +49,13 @@ public class ServerEventHandler {
             configManager.savePlayerConfig(playerConfig.getPlayerUuid(),playerConfig);
         }
 
-        ConfigManager.getInstance().saveSurvivalTrialsConfig();
 
+
+        ConfigManager.getInstance().saveSurvivalTrialsConfig();
         CustomLogger.getInstance().outputBulkToConsole();
         CustomLogger.getInstance().outputtimerLogToConsole();
-    }
 
+    }
     @SubscribeEvent
     public static void onServerStarting(ServerStartingEvent event) {
         CustomLogger.getInstance().info(("****** Invoked the FMLDedicatedServerSetupEvent!! *********"));
